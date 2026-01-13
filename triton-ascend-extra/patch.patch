@@ -40,3 +40,15 @@ index 56819b4e..dcdff93f 100644
      cmdclass={
          "build_ext": BuildExt,
          "install": BuildInstall,
+diff --git a/.gitmodules b/.gitmodules
+index b3d4aefb..a31421f5 100644
+--- a/.gitmodules
++++ b/.gitmodules
+@@ -1,6 +1,6 @@
+ [submodule "third_party/triton"]
+ 	path = third_party/triton
+-	url = https://github.com/triton-lang/triton.git
++	url = git@github.com:triton-lang/triton.git
+ 	depth = 1
+ [submodule "third_party/ascendnpu-ir"]
+ 	path = third_party/ascendnpu-ir
