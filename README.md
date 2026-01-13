@@ -1,0 +1,108 @@
+# triton-ascend-env
+
+env for building `triton-ascend` and `AscendNPU-IR`
+
+## pixi env
+
+```bash
+pixi i
+
+pixi shell
+```
+
+## get cann toolkit
+
+- https://www.hiascend.com/developer/download/community/result?module=cann
+  `Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run`
+  `Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run`
+
+```bash
+chmod +x Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run
+./Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run --extract=ascend-cann-toolkit
+pushd ascend-cann-toolkit/run_package
+./Ascend-BiSheng-toolkit_x86.run --extract=ascend-bisheng-toolkit
+popd
+# hivmc, bishengir-opt, bishengir-compile, bishengir-hivm-compile
+# ln -s $PWD/ascend-cann-toolkit/run_package/ascend-bisheng-toolkit/bishengir/bin/* $PWD/.pixi/envs/default/bin/
+# only use `hivmc`
+ln -s $PWD/ascend-cann-toolkit/run_package/ascend-bisheng-toolkit/bishengir/bin/hivmc $PWD/.pixi/envs/default/bin/hivmc
+```
+
+## build `AscendNPU-IR`
+
+```bash
+# tested on `ce2db36d0c9a5b8f59aa9a791ec9c74454b7836b`
+# git clone git@github.com:Ascend/AscendNPU-IR.git
+git clone https://gitcode.com/Ascend/AscendNPU-IR.git
+ln -s $PWD/AscendNPU-IR-extra/* $PWD/AscendNPU-IR/
+
+pushd AscendNPU-IR
+
+git apply patch.patch
+# git submodule update --init --depth 1
+bash llvm_download.sh
+pushd third-party
+bash ../build-tools/apply_patches.sh
+popd
+ln -s $PWD/CMakePresets.json $PWD/third-party/llvm-project/llvm/CMakePresets.json
+
+rm -rf build/CMakeFiles
+rm -rf build/CMakeCache.txt
+cmake --preset osx -S$PWD/third-party/llvm-project/llvm -B$PWD/build
+cmake --build $PWD/build --target all
+
+popd
+```
+
+## build `triton-ascend`
+
+```bash
+# check `triton-ascend/llvm-hash.txt` for llvm commit
+# tested on llvm-project `b5cc222d7429fe6f18c787f633d5262fac2e676f`
+git clone git@github.com:gglin001/llvm-ascend.git
+pushd llvm-ascend
+bash scripts/llvm_download.sh
+bash scripts/llvm_build.sh
+popd
+```
+
+```bash
+# tested on `9319a71c74a630d7b2b47676557f29f529165a9c`
+# git clone git@github.com:Ascend/triton-ascend.git
+git clone https://gitcode.com/Ascend/triton-ascend.git
+ln -s $PWD/triton-ascend-extra/* $PWD/triton-ascend/
+ln -s $PWD/llvm-ascend $PWD/triton-ascend/llvm-ascend
+
+pushd triton-ascend
+
+git apply patch.patch
+git submodule update --init --depth 1
+
+rm -rf build/CMakeFiles
+rm -rf build/CMakeCache.txt
+cmake --preset osx -S$PWD -B$PWD/build \
+  -DCMAKE_BUILD_TYPE=Debug \
+  -DPython3_EXECUTABLE=$(which python)
+cmake --build $PWD/build --target all
+
+mkdir -p $PWD/third_party/triton/python/triton/_C
+rm -f $PWD/third_party/triton/python/triton/_C/libtriton.so &&
+  ln -s $PWD/build/libtriton.so $PWD/third_party/triton/python/triton/_C/libtriton.so
+rm -f $PWD/ascend/backend/triton-adapter-opt &&
+  ln -s $PWD/build/bin/triton-adapter-opt $PWD/ascend/backend/triton-adapter-opt
+
+export TRITON_PLUGIN_DIRS=$PWD/ascend
+# disable
+# ext_modules=[CMakeExtension("triton", "triton/_C/")],
+TRITON_OFFLINE_BUILD=1 DEBUG=1 uv pip install --system -e . --no-build-isolation -vvv
+# uv pip uninstall --system triton
+
+python -c "import triton.language as tl"
+python -c "from triton import jit"
+
+popd
+```
+
+## work with `torch_npu`
+
+TODO

@@ -1,0 +1,13 @@
+diff --git a/build-tools/apply_patches.sh b/build-tools/apply_patches.sh
+index c14617e..4487f6a 100755
+--- a/build-tools/apply_patches.sh
++++ b/build-tools/apply_patches.sh
+@@ -23,7 +23,7 @@ readonly OPTION="${1:-}"
+
+ # will be inside third-party folder with basename as the submodule folder name
+ readonly SUBMODULES=(
+-  "torch-mlir"
++  # "torch-mlir"
+   "llvm-project"
+ )
+
