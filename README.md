@@ -79,7 +79,7 @@ chmod +x Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run
 ./Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run --extract=ascend-cann-toolkit
 pushd ascend-cann-toolkit/run_package
 ./Ascend-BiSheng-toolkit_x86.run --extract=ascend-bisheng-toolkit
-# ./CANN-toolkit-8.5.t8.0.b060-linux.x86_64.run --extract=cann-toolkit
+./CANN-toolkit-8.5.t8.0.b060-linux.x86_64.run --extract=cann-toolkit
 # ./CANN-compiler-8.5.t8.0.b060-linux.x86_64.run --install-path=cann-compiler
 popd
 
