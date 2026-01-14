@@ -4,6 +4,66 @@ env for building `triton-ascend` and `AscendNPU-IR`
 
 ## pixi env
 
+- install pixi
+
+```bash
+
+# https://pixi.prefix.dev/latest/
+curl -fsSL https://pixi.sh/install.sh | sh
+# or download from
+https://github.com/prefix-dev/pixi/releases
+
+chmod +x pixi
+mkdir -p ~/.local/bin/ && cp pixi ~/.local/bin/
+cat >>~/.bashrc <<EOF
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.pixi/bin:$PATH"
+# eval "$(pixi shell-hook)"
+if command -v pixi &>/dev/null; then
+  eval "$(pixi shell-hook 2>/dev/null)"
+fi
+EOF
+
+# optional: config for china mirrors
+mkdir -p ~/.config/pip
+cat >~/.config/pip/pip.conf <<EOF
+[global]
+index-url = https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+EOF
+
+mkdir -p ~/.config/uv
+cat >~/.config/uv/uv.toml <<EOF
+[[index]]
+url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/"
+default = true
+EOF
+
+mkdir -p ~/.pixi
+cat >~/.pixi/config.toml <<EOF
+# https://pixi.sh/dev/reference/pixi_configuration/
+default-channels = ["conda-forge"]
+
+[mirrors]
+"https://conda.anaconda.org/conda-forge" = [
+  "https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge",
+  "https://prefix.dev/conda-forge",
+]
+"https://conda.anaconda.org/conda-forge/label" = [
+  "https://conda.anaconda.org/conda-forge/label",
+]
+"https://pypi.org/simple" = [
+  "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple",
+]
+
+# [pypi-config]
+# # index-url = "https://pypi.org/simple"
+# index-url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"
+EOF
+
+```
+
+- activate pixi
+
 ```bash
 pixi i
 
