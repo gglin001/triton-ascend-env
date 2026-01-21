@@ -129,7 +129,7 @@ popd
 ```
 
 ```bash
-# tested on `9319a71c74a630d7b2b47676557f29f529165a9c`
+# tested on `main` branch `bb037cdac0ecf20b6621afbd56c812b077c8236e`
 # git clone git@github.com:Ascend/triton-ascend.git
 git clone https://gitcode.com/Ascend/triton-ascend.git
 ln -s $PWD/triton-ascend-extra/* $PWD/triton-ascend/
@@ -142,21 +142,23 @@ git submodule update --init --depth 1
 
 rm -rf build/CMakeFiles
 rm -rf build/CMakeCache.txt
-cmake --preset osx -S$PWD -B$PWD/build \
+[[ "$(uname)" == "Darwin" ]] && PRESET="osx_lld" || PRESET="osx"
+cmake --preset $PRESET -S$PWD -B$PWD/build \
   -DCMAKE_BUILD_TYPE=Debug \
   -DPython3_EXECUTABLE=$(which python)
 cmake --build $PWD/build --target all
 
-mkdir -p $PWD/third_party/triton/python/triton/_C
-rm -f $PWD/third_party/triton/python/triton/_C/libtriton.so &&
-  ln -s $PWD/build/libtriton.so $PWD/third_party/triton/python/triton/_C/libtriton.so
-rm -f $PWD/ascend/backend/triton-adapter-opt &&
-  ln -s $PWD/build/bin/triton-adapter-opt $PWD/ascend/backend/triton-adapter-opt
+mkdir -p $PWD/python/triton/_C
+rm -f $PWD/python/triton/_C/libtriton.so &&
+  ln -s $PWD/build/libtriton.so $PWD/python/triton/_C/libtriton.so
+rm -f $PWD/third_party/ascend/backend/triton-adapter-opt &&
+  ln -s $PWD/build/bin/triton-adapter-opt $PWD/third_party/ascend/backend/triton-adapter-opt
 
-export TRITON_PLUGIN_DIRS=$PWD/ascend
+pushd python
 # disable
 # ext_modules=[CMakeExtension("triton", "triton/_C/")],
 TRITON_OFFLINE_BUILD=1 DEBUG=1 uv pip install --system -e . --no-build-isolation -vvv
+popd
 # uv pip uninstall --system triton
 
 python -c "import triton.language as tl"
