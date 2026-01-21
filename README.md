@@ -2,6 +2,8 @@
 
 env for building `triton-ascend` and `AscendNPU-IR`
 
+check `master` version for https://gitcode.com/Ascend/triton-ascend/tree/master
+
 ## pixi env
 
 - install pixi
