@@ -21,7 +21,7 @@
         "TRITON_BUILD_UT": false,
         "TRITON_CODEGEN_BACKENDS": "ascend",
         "TRITON_BUILD_PYTHON_MODULE": true,
-        "TRITON_BUILD_WITH_RISCV_LLVM_COMPONENTS": true,
+        "TRITON_BUILD_WITH_RISCV_LLVM_COMPONENTS": false,
         "LLVM_ENABLE_ASSERTIONS": true
       }
     },
