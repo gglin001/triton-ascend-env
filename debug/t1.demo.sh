@@ -4,6 +4,8 @@ mkdir -p $DIR
 
 export MLIR_ENABLE_DUMP="1"
 export TRITON_DUMP_DIR=$DIR
+# custom
+export TRITON_ASCEND_DUMP_DIR=$DIR
 
 export TRITON_HOME=$PPWD/debug
 export TRITON_ALWAYS_COMPILE="1"

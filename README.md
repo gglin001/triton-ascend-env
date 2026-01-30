@@ -88,6 +88,10 @@ pushd ascend-cann-toolkit/run_package
 # ./cann-asc-tools_8.5.0_linux-x86_64.run --noexec --extract=cann-asc-tools
 popd
 
+# tmp solution
+ln -s $PWD/ascend-cann-toolkit/run_package/ascendnpu-ir/bishengir/bin/hivmc \
+  $PWD/ascend-cann-toolkit/run_package/cann-bisheng-compiler/bisheng_compiler/bin/
+
 # `bishengir-compile`, `bishengir-opt`, `hivmc`
 # $PWD/ascend-cann-toolkit/run_package/ascendnpu-ir/bishengir/bin
 # `bisheng` and `llvm-*`
