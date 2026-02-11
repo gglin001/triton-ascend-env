@@ -37,6 +37,9 @@ fd-find = ">=10.3.0,<11"
 ruff = ">=0.14.11,<0.15"
 ty = ">=0.0.11,<0.0.12"
 
+pytest = ">=9.0.2,<10"
+scipy = ">=1.17.0,<2"
+
 [activation.env]
 # CANN_PATH_2 = "${PIXI_PROJECT_ROOT}/AscendNPU-IR/build/bin:${PATH}"
 CANN_PATH_1 = "${PIXI_PROJECT_ROOT}/ascend-cann-toolkit/run_package/ascendnpu-ir/bishengir/bin"

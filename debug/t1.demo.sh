@@ -2,13 +2,13 @@ PPWD=$(pwd)
 DIR=$PPWD/debug/dump
 mkdir -p $DIR
 
-export MLIR_ENABLE_DUMP="1"
+export MLIR_ENABLE_DUMP=1
 export TRITON_DUMP_DIR=$DIR
 # custom
 export TRITON_ASCEND_DUMP_DIR=$DIR
 
 export TRITON_HOME=$PPWD/debug
-export TRITON_ALWAYS_COMPILE="1"
+export TRITON_ALWAYS_COMPILE=1
 
 # export MLIR_ROOT="$PPWD/AscendNPU-IR/build"
 # export LLVM_ROOT="$PPWD/AscendNPU-IR/build"
