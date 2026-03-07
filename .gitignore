@@ -8,3 +8,7 @@ pixi.lock
 
 .DS_Store
 __pycache__
+
+/AscendNPU-IR
+/llvm-ascend
+/triton-ascend
